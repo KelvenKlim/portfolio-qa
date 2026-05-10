@@ -111,7 +111,7 @@ elif [ "$TYPE" == "component" ]; then
     cat > "$TEST_FILE" << EOF
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen } from '@/test/utils/test-utils';
-import $NAME from '@/$PATH_PART/$NAME';
+import $NAME from '@/components/$PATH_PART';
 
 describe('$PATH_PART/$NAME', () => {
   beforeEach(() => {
