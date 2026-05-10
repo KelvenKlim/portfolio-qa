@@ -36,7 +36,7 @@ const Navbar = () => {
             <button
               key={key}
               onClick={() => scrollTo(sectionIds[key])}
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="bg-transparent text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
               {t.nav[key]}
             </button>
