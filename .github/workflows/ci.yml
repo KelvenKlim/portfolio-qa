@@ -1,0 +1,185 @@
+name: CI - Tests & Quality
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+  push:
+    branches:
+      - main
+      - master
+      - 'feat/**'
+      - 'test/**'
+      - 'fix/**'
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Verify installation
+        run: |
+          node --version
+          npm --version
+          npm list --depth=0 || true
+        
+      - name: Run all tests
+        run: npm test
+        env:
+          CI: true
+        
+      - name: Generate coverage report
+        run: npm run test:coverage
+        continue-on-error: true
+        
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
+
+  test-unit:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run unit tests
+        run: npm run test:unit
+        env:
+          CI: true
+
+  test-component:
+    name: Component Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run component tests
+        run: npm run test:component
+        env:
+          CI: true
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [test, test-unit, test-component]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build project
+        run: npm run build
+        
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ github.sha }}
+          path: dist/
+          retention-days: 7
+
+  lint:
+    name: Type Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Type check
+        run: npx tsc --noEmit
+
+  quality-summary:
+    name: Quality Summary
+    runs-on: ubuntu-latest
+    needs: [test, test-unit, test-component, build, lint]
+    if: always()
+    
+    steps:
+      - name: Check results
+        run: |
+          echo "🧪 Tests: ${{ needs.test.result }}"
+          echo "🔬 Unit Tests: ${{ needs.test-unit.result }}"
+          echo "🎨 Component Tests: ${{ needs.test-component.result }}"
+          echo "🏗️  Build: ${{ needs.build.result }}"
+          echo "📏 Lint: ${{ needs.lint.result }}"
+          
+      - name: Create summary
+        run: |
+          echo "# Quality Check Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| All Tests | ${{ needs.test.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Unit Tests | ${{ needs.test-unit.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Component Tests | ${{ needs.test-component.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Build | ${{ needs.build.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Type Check | ${{ needs.lint.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          
+      - name: Fail if any check failed
+        if: |
+          needs.test.result != 'success' ||
+          needs.test-unit.result != 'success' ||
+          needs.test-component.result != 'success' ||
+          needs.build.result != 'success' ||
+          needs.lint.result != 'success'
+        run: |
+          echo "❌ One or more quality checks failed!"
+          exit 1
