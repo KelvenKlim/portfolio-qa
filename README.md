@@ -1,4 +1,5 @@
-# portfolio-qa
+# Portfólio QA
+>Kelven Prasad 
 
 Este repositório contém uma aplicação front-end construída com Vite, React, TypeScript e Tailwind CSS. O layout e os componentes seguem a estrutura shadcn-ui e Radix UI.
 
