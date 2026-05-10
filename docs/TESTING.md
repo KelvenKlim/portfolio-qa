@@ -23,11 +23,11 @@ src/test/
 │   ├── hooks/use-mobile.test.ts (10)
 │   └── i18n/LanguageContext.test.tsx (18)
 └── component/ (320 tests)
+    ├── NavLink.test.tsx (31)
     ├── landing/
     │   ├── Navbar.test.tsx (22)
     │   ├── Hero.test.tsx (39)
     │   ├── Footer.test.tsx (30)
-    │   ├── NavLink.test.tsx (31)
     │   ├── About.test.tsx (55)
     │   ├── Services.test.tsx (73)
     │   └── CTA.test.tsx (70)
