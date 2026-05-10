@@ -1,10 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render as rtlRender, screen } from '@testing-library/react';
+import type { ReactElement } from 'react';
 import { NavLink } from '@/components/NavLink';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 
 // Custom render for NavLink tests (without BrowserRouter from test-utils)
-const render = (ui: React.ReactElement, options = {}) => {
+const render = (ui: ReactElement, options = {}) => {
   return rtlRender(ui, options);
 };
 
