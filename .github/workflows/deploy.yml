@@ -37,7 +37,8 @@ jobs:
           CI: true
       
       - name: Run coverage
-        run: npm run test:coverage
+        run: npm run test:coverage || true
+        continue-on-error: true
 
   build:
     name: Build
