@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
@@ -11,7 +11,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
  */
 
 interface AllProvidersProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const AllProviders = ({ children }: AllProvidersProps) => {
