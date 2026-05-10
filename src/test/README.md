@@ -168,27 +168,3 @@ describe('feature/Component', () => {
 }
 ```
 
-## 📈 Status Atual
-
-### ✅ Completo
-- **Unit Tests**: 38 testes
-  - lib/utils.ts: 9 testes
-  - hooks/use-mobile.tsx: 10 testes
-  - i18n/LanguageContext.tsx: 18 testes (com 1 teste duplicado)
-
-- **Component Tests**: 91 testes
-  - landing/Navbar.tsx: 22 testes
-  - landing/Hero.tsx: 39 testes
-  - landing/Footer.tsx: 30 testes
-
-**Total**: 129 testes passando ✅
-
-### 🚧 Em Progresso
-- Reorganização da estrutura de testes
-- Padronização de imports
-
-### 📋 Próximos Passos
-- NavLink component tests
-- UI component tests (Button, Card, Badge)
-- Additional landing components
-- Integration tests
