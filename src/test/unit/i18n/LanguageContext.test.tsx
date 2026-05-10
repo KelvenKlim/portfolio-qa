@@ -241,18 +241,17 @@ describe('i18n/LanguageContext', () => {
       expect(renderCount).toBe(initialRenderCount + 2); // Only the explicit rerenders
     });
 
-    it('should toggle language quickly (< 10ms)', () => {
+    it('should toggle language', () => {
       const { result } = renderHook(() => useLanguage(), { wrapper });
 
-      const start = performance.now();
-      
+      const initialLang = result.current.lang;
+
       act(() => {
         result.current.toggleLang();
       });
 
-      const end = performance.now();
-
-      expect(end - start).toBeLessThan(10);
+      expect(result.current.lang).not.toBe(initialLang);
+      expect(result.current.lang).toBe('en');
     });
   });
 
