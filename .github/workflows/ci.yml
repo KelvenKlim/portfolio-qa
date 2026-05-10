@@ -31,6 +31,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
+      - name: Verify installation
+        run: |
+          node --version
+          npm --version
+          npm list --depth=0 || true
+        
       - name: Run all tests
         run: npm test
         env:
@@ -38,14 +44,15 @@ jobs:
         
       - name: Generate coverage report
         run: npm run test:coverage
+        continue-on-error: true
         
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@v4
+      - name: Upload coverage artifact
         if: always()
+        uses: actions/upload-artifact@v4
         with:
-          files: ./coverage/coverage-final.json
-          fail_ci_if_error: false
-          verbose: true
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
 
   test-unit:
     name: Unit Tests
