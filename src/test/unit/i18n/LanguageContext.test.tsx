@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
-import { LanguageProvider, useLanguage } from './LanguageContext';
-import { translations } from './translations';
+import { LanguageProvider, useLanguage } from '@/i18n/LanguageContext';
+import { translations } from '@/i18n/translations';
 import { ReactNode } from 'react';
 
 describe('i18n/LanguageContext', () => {

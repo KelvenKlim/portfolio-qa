@@ -13,9 +13,9 @@
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
-    "test:unit": "vitest run src/lib src/hooks src/i18n",
-    "test:components": "vitest run src/components",
-    "test:integration": "vitest run src/pages",
+    "test:unit": "vitest run src/test/unit",
+    "test:component": "vitest run src/test/component",
+    "test:integration": "vitest run src/test/integration",
     "test:changed": "vitest related"
   },
   "dependencies": {
