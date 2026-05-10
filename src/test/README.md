@@ -102,7 +102,7 @@ npm test
 npm run test:unit
 
 # Apenas testes de componentes
-npm run test:components
+npm run test:component
 
 # Apenas testes de integração
 npm run test:integration
