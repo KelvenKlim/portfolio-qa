@@ -90,7 +90,7 @@ const Testimonials = () => {
 				>
 					{testimonials.map((item, index) => (
 						<SwiperSlide key={index}>
-							<div className="card-elevated group overflow-hidden rounded-xl p-6 bg-background shadow-lg h-[400px] flex flex-col justify-between">
+							<div className="card-elevated group overflow-hidden rounded-xl p-6 bg-background shadow-lg h-[400px] flex flex-col justify-between transition-transform duration-300 transform hover:scale-105">
 								<div className="flex flex-col items-center text-center">
 									<div className="w-24 h-24 mb-4">
 										<img
